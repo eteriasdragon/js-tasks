@@ -188,49 +188,128 @@ function checkString(string) {
   return formattedString;
 }
 
-// console.log(checkString('36578 http://world.com email@gmail.com '));
+// console.log(checkString('36578 http://world.com email@gmail.com'));
 
 // task 14
 
-const text = '([a';
+const str = '([a';
 const rootElement = document.getElementById('root');
-const isBalanced = checkParenthesesBalance(text);
+const isCorrect = checkBracesRight(str);
 
-if (isBalanced) {
-  rootElement.innerHTML = text;
+if (isCorrect) {
+  rootElement.innerHTML = str;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.addEventListener('selectstart', function (e) {
-    e.preventDefault();
-  });
-});
+// document.addEventListener('DOMContentLoaded', function () {
+//   document.addEventListener('selectstart', function (e) {
+//     e.preventDefault();
+//   });
+// });
+//
+// document.oncontextmenu = function () {
+//   return false;
+// };
 
-document.oncontextmenu = function () {
-  return false;
-};
-
-function checkParenthesesBalance(text) {
-  const stack = [];
+function checkBracesRight(str) {
+  const bracesLoop = [];
   const openBraces = ['(', '{', '['];
   const closingBraces = [')', '}', ']'];
 
-  for (const char of text.split('')) {
-    if (openBraces.includes(char)) {
-      stack.push(char);
+  str.split("").forEach(symbol => {
+
+    if (openBraces.includes(symbol)) {
+      bracesLoop.push(symbol);
     }
-    if (closingBraces.includes(char)) {
-      if (!stack.length) {
+
+    if (closingBraces.includes(symbol)) {
+
+      if (!bracesLoop.length) {
         return false;
       }
-      const lastChar = stack.pop();
-      if (openBraces.indexOf(lastChar) !== closingBraces.indexOf(char)) {
+      const lastSymbol = bracesLoop.pop();
+
+      if (openBraces.indexOf(lastSymbol) !== closingBraces.indexOf(symbol)) {
         return false;
       }
     }
-  }
-  return !stack.length;
+  })
+
+  return !bracesLoop.length;
 }
 
 // task 15
 
+function pwdGenerator(){
+  let pwd = "";
+  const settings = {
+    min: 6,
+    max: 20,
+    validSymbols: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+  }
+  const pwdLength = Math.floor(Math.random() * (settings.max - settings.min) + settings.min);
+
+  let uppercaseLettersCounter = 0;
+  let digitCounter = 0;
+  let underScoreCounter = 0;
+
+  for (let i=0; i <= pwdLength; i++) {
+
+    const symbolToAdd = settings.validSymbols[Math.floor(Math.random() * settings.validSymbols.length)];
+
+    if(!isNaN(+symbolToAdd) && !isNaN(+pwd[pwd.length -1])) continue;
+    if(digitCounter > 5) continue;
+    if(underScoreCounter > 1) continue;
+
+    pwd += symbolToAdd;
+
+    if (/[A-Z]/.test(symbolToAdd)) {
+      uppercaseLettersCounter++;
+    } else if(/\d/.test(symbolToAdd)) {
+      digitCounter++;
+    }
+  }
+
+  if (uppercaseLettersCounter < 2) {
+    const randomIdxToSlice = Math.floor(Math.random() * pwd.length);
+    pwd = pwd.slice(0, randomIdxToSlice) + '_' + pwd.slice(randomIdxToSlice);
+  }
+
+  if (underScoreCounter === 0) {
+    const randomIdxToSlice = Math.floor(Math.random() * pwd.length);
+    pwd = pwd.slice(0, randomIdxToSlice) + '_' + pwd.slice(randomIdxToSlice);
+  }
+
+  return pwd;
+}
+
+// console.log(pwdGenerator());
+
+// task 16
+
+function arraySort(arr){
+  const rightPart = [];
+  const leftPart = [];
+
+  arr.sort((a,b) => a-b).forEach((number, index) => { index % 2 ? rightPart.unshift(number) : leftPart.push(number)});
+
+  return [...leftPart, ...rightPart];
+}
+
+// console.log(arraySort([1,6,8,3,4,76,456,75,68,56,2,34,]));
+
+// task 17
+
+function sortByFrequency(str) {
+
+  const charFrequency = [...str].reduce((info, char) => {
+    info[char] = (info[char] || 0) + 1;
+    return info;
+  }, {});
+
+  return Object.keys(charFrequency).sort((a, b) => {
+    return charFrequency[b] - charFrequency[a];
+  }).join("");
+
+}
+
+console.log(sortByFrequency('abrarrxtgfjdsrtsxgnzdfhzarhcadbra'));
