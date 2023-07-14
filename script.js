@@ -453,3 +453,38 @@ const university = {
 
 // task 22
 
+function getCommonStatistics(text) {
+  const sentencesArr = text.split(/[.!?]+/).map(sentence => sentence.trim())
+  const wordsArr = text.match(/[\p{L}\p{N}']+/gu);
+  const symbolsArr = [...text.replace(/\s+/g, '')];
+
+  return {
+    sentenceAmount: sentencesArr.length,
+    wordsAmount: wordsArr.length,
+    symbolsAmount: symbolsArr.length
+  }
+}
+
+function getMostFrequencyWords(text) {
+  const wordsArr = text.match(/[\p{L}\p{N}']+/gu);
+  const wordsCounter = wordsArr.reduce((counter, word) => {
+    counter[word] = (counter[word] || 0) + 1;
+    return counter;
+  }, {});
+  const mostFrequentWordCounter = Object.values(wordsCounter).sort((a,b) => b - a)[0];
+
+  return Object.keys(wordsCounter).filter(word => wordsCounter[word] === mostFrequentWordCounter);
+}
+
+console.log(
+  getCommonStatistics(
+    "Manor we shall merit by chief wound no or would. Oh towards between subject passage sending mention or it. Sight happy do burst fruit to woody begin at. Assurance perpetual he in oh determine as. The year paid met him does eyes same. Own marianne improved sociable not out. Thing do sight blush mr an. Celebrated am announcing delightful remarkably we in literature it solicitude. Design use say piqued any gay supply. Front sex match vexed her those great."
+  )
+);
+
+console.log(
+  getMostFrequencyWords(
+    "Manor we shall merit by chief wound no or would. Oh towards between subject passage sending mention or it. Sight happy do burst fruit to woody begin at. Assurance perpetual he in oh determine as. The year paid met him does eyes same. Own marianne improved sociable not out. Thing do sight blush mr an. Celebrated am announcing delightful remarkably we in literature it solicitude. Design use say piqued any gay supply. Front sex match vexed her those great."
+  )
+);
+
