@@ -373,3 +373,83 @@ function caesarAlgorithm (string, shiftAmount) {
 
 // console.log(caesarAlgorithm('i love ^^ javascript', -6));
 
+// task 20
+
+function isAnagrams(str1, str2) {
+
+  const formatter = (str) => str.replace(/[^\w\s]/gi, "").replace(/\s/g, '').toLowerCase().split("").sort((a,b) =>  a.localeCompare(b)).join("");
+
+  return formatter(str1) === formatter(str2);
+}
+
+// console.log(isAnagrams('older and wiser', 'I learned words'));
+
+// task 21
+
+const university = {
+
+  students: [
+    {
+      id: 1,
+      name: "Alice Larson",
+      course: 3,
+      faculty: "Cybersecurity",
+    },
+    {
+      id: 2,
+      name: "Mike Johnson",
+      course: 2,
+      faculty: "Computer Science",
+    },
+    {
+      id: 3,
+      name: "Jamie Owen",
+      course: 4,
+      faculty: "Cybersecurity",
+    },
+    {
+      id: 4,
+      name: "Karl Frantel",
+      course: 1,
+      faculty: "Data Analytics",
+    },
+    {
+      id: 5,
+      name: "Kathrin Pierce",
+      course: 2,
+      faculty: "Computer Science",
+    },
+    {
+      id: 6,
+      name: "Elena Gilbert",
+      course: 3,
+      faculty: "Cybersecurity",
+    },
+  ],
+
+  addStudent(studentData) {
+    this.students.push(studentData);
+  },
+
+  getStudent(studentId) {
+    const studentToKnow = this.students.find(({id}) => id === +studentId);
+    return studentToKnow ? studentToKnow : "This student does not exist";
+  },
+
+  deleteStudent(studentId) {
+    this.students = this.students.filter(({id}) => id !== studentId);
+  },
+
+  getStudentsOfCourse(courseToFilter) {
+    return this.students.filter(({course}) => course === +courseToFilter);
+  },
+
+  getStudentsOfFaculty(facultyToFilter) {
+    return this.students.filter(({faculty}) => faculty === facultyToFilter);
+  }
+}
+
+// console.log(university.getStudentsOfCourse(2));
+
+// task 22
+
