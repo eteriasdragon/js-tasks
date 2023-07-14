@@ -242,23 +242,21 @@ function checkBracesRight(str) {
 function pwdGenerator(){
   let pwd = "";
   const settings = {
-    min: 6,
-    max: 20,
+    min: 5,
+    max: 19,
     validSymbols: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
   }
   const pwdLength = Math.floor(Math.random() * (settings.max - settings.min) + settings.min);
 
   let uppercaseLettersCounter = 0;
   let digitCounter = 0;
-  let underScoreCounter = 0;
 
-  for (let i=0; i <= pwdLength; i++) {
+  for (let i=0; i < pwdLength; i++) {
 
     const symbolToAdd = settings.validSymbols[Math.floor(Math.random() * settings.validSymbols.length)];
 
     if(!isNaN(+symbolToAdd) && !isNaN(+pwd[pwd.length -1])) continue;
-    if(digitCounter > 5) continue;
-    if(underScoreCounter > 1) continue;
+    if(digitCounter >= 5) continue;
 
     pwd += symbolToAdd;
 
@@ -273,11 +271,8 @@ function pwdGenerator(){
     const randomIdxToSlice = Math.floor(Math.random() * pwd.length);
     pwd = pwd.slice(0, randomIdxToSlice) + '_' + pwd.slice(randomIdxToSlice);
   }
-
-  if (underScoreCounter === 0) {
-    const randomIdxToSlice = Math.floor(Math.random() * pwd.length);
-    pwd = pwd.slice(0, randomIdxToSlice) + '_' + pwd.slice(randomIdxToSlice);
-  }
+  const randomIdxToSlice = Math.floor(Math.random() * pwd.length);
+  pwd = pwd.slice(0, randomIdxToSlice) + '_' + pwd.slice(randomIdxToSlice);
 
   return pwd;
 }
@@ -312,4 +307,69 @@ function sortByFrequency(str) {
 
 }
 
-console.log(sortByFrequency('abrarrxtgfjdsrtsxgnzdfhzarhcadbra'));
+// console.log(sortByFrequency('abrarrxtgfjdsrtsxgnzdfhzarhcadbra'));
+
+// task 18
+
+function findLongestCommonSubstring(str1, str2) {
+  const firstStrLength = str1.length;
+  const secondStrLength = str2.length;
+
+  let longestLength = 0;
+  let endIndex = 0;
+
+  for (let i = 0; i < firstStrLength; i++) {
+    for (let j = 0; j < secondStrLength; j++) {
+      let currentLongestSubstrLength = 0;
+      while (str1[i + currentLongestSubstrLength] === str2[j + currentLongestSubstrLength] && i + currentLongestSubstrLength < firstStrLength && j + currentLongestSubstrLength < secondStrLength) {
+        currentLongestSubstrLength++;
+      }
+
+      if (currentLongestSubstrLength > longestLength) {
+        longestLength = currentLongestSubstrLength;
+        endIndex = i + currentLongestSubstrLength - 1;
+      }
+    }
+  }
+
+  if (longestLength > 0) {
+    return str1.substr(endIndex - longestLength + 1, longestLength);
+  } else {
+    return "";
+  }
+}
+// console.log(findLongestCommonSubstring("programming language", "gram"));
+
+// task 19
+
+function caesarAlgorithm (string, shiftAmount) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const length = alphabet.length;
+
+  shiftAmount = shiftAmount >= 0 ? shiftAmount % length : (shiftAmount % length + length) % length;
+
+  const stringSymbols = string.split('');
+
+  let encryptedStr = '';
+
+  stringSymbols.forEach(symbol => {
+
+    if (symbol.match(/[a-z]/i)) {
+      const alphabetCharIdx = alphabet.indexOf(symbol.toLowerCase());
+
+      const encryptedIdx = (alphabetCharIdx + shiftAmount) % length;
+      const encryptedSymbol = alphabet[encryptedIdx];
+
+      encryptedStr += symbol === symbol.toLowerCase() ? encryptedSymbol : encryptedSymbol.toUpperCase();
+
+    } else {
+      encryptedStr += symbol;
+    }
+
+  })
+
+  return encryptedStr;
+}
+
+// console.log(caesarAlgorithm('i love ^^ javascript', -6));
+
